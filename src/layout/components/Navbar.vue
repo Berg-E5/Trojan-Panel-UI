@@ -11,7 +11,7 @@
     <div class="right-menu">
       <template v-if="device !== 'mobile'">
         <screenfull id="screenfull" class="right-menu-item hover-effect" />
-
+        <dark-mode-toggle class="right-menu-item hover-effect" />
         <el-tooltip
           :content="$t('navbar.size')"
           effect="dark"
@@ -65,6 +65,7 @@ import Hamburger from '@/components/Hamburger'
 import Screenfull from '@/components/Screenfull'
 import SizeSelect from '@/components/SizeSelect'
 import LangSelect from '@/components/LangSelect'
+import DarkModeToggle from '@/components/DarkModeToggle'
 import checkPermission from '@/utils/permission' // 权限判断指令
 
 export default {
@@ -73,7 +74,8 @@ export default {
     Hamburger,
     Screenfull,
     SizeSelect,
-    LangSelect
+    LangSelect,
+    DarkModeToggle
   },
   computed: {
     ...mapGetters(['sidebar', 'avatar', 'device'])

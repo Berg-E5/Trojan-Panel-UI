@@ -5,6 +5,7 @@ const { showSettings, tagsView, fixedHeader, sidebarLogo } = defaultSettings
 
 const state = {
   theme: variables.theme,
+  sideTheme: 'light',
   showSettings: showSettings,
   tagsView: tagsView,
   fixedHeader: fixedHeader,
@@ -22,6 +23,9 @@ const mutations = {
 const actions = {
   changeSetting({ commit }, data) {
     commit('CHANGE_SETTING', data)
+  },
+  changeSideTheme({ commit }, theme) {
+    commit('CHANGE_SETTING', { key: 'sideTheme', value: theme })
   }
 }
 

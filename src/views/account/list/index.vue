@@ -136,8 +136,20 @@
       >
         {{ $t('table.exportAccountUnused') }}
       </el-button>
+      <el-button
+        class="filter-item"
+        type="warning"
+        icon="el-icon-s-grid"
+        @click="handleBatchAction"
+        v-if="checkPermission(['sysadmin']) && selectedIds.length > 0"
+      >
+        {{ $t('table.batchAction') }} ({{ selectedIds.length }})
+      </el-button>
     </div>
     <el-table
+      ref="multipleTable"
+      :row-key="(row) => row.id"
+      @selection-change="handleSelectionChange"
       :key="tableKey"
       v-loading="listLoading"
       :data="list"
@@ -146,6 +158,12 @@
       highlight-current-row
       style="width: 100%"
     >
+      <el-table-column
+        type="selection"
+        width="50"
+        align="center"
+        :reserve-selection="true"
+      />
       <el-table-column
         :label="$t('table.id').toString()"
         sortable="custom"
@@ -440,6 +458,11 @@
       :dialog-form-visible-props.sync="batchOperationDialogFormVisible"
       :get-list-props="getList"
     />
+    <BatchAction
+      :dialog-visible.sync="batchActionDialogVisible"
+      :selected-ids="selectedIds"
+      :get-list="getList"
+    />
   </div>
 </template>
 
@@ -466,6 +489,7 @@ import checkPermission from '@/utils/permission'
 import { setting } from '@/api/system'
 import { downloadTemplate } from '@/api/file-task'
 import BatchOperation from '@/views/account/list/compoments/BatchOperation'
+import BatchAction from '@/views/account/list/compoments/BatchAction'
 import copy from 'copy-to-clipboard'
 
 export default {
@@ -479,7 +503,7 @@ export default {
       return deletedMap[deleted]
     }
   },
-  components: { BatchOperation, Pagination, ImportTip },
+  components: { BatchOperation, BatchAction, Pagination, ImportTip },
   data() {
     const validateUsername = (rule, value, callback) => {
       if (this.temp.username.trim().indexOf('admin') >= 0) {
@@ -519,6 +543,8 @@ export default {
       },
       dialogFormVisible: false,
       batchOperationDialogFormVisible: false,
+      batchActionDialogVisible: false,
+      selectedIds: [],
       textMap: {
         update: this.$t('table.edit'),
         create: this.$t('table.add')
@@ -905,6 +931,16 @@ export default {
       this.$nextTick(() => {
         this.$refs['batchOperationForm'].$refs['dataForm'].clearValidate()
       })
+    },
+    handleSelectionChange(rows) {
+      this.selectedIds = rows.map((r) => r.id)
+    },
+    handleBatchAction() {
+      if (this.selectedIds.length === 0) {
+        this.$message.warning(this.$t('table.selectAccountsFirst'))
+        return
+      }
+      this.batchActionDialogVisible = true
     },
     exportAccountUnused() {
       exportAccountUnused().then(() => {

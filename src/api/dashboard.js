@@ -25,3 +25,47 @@ export function trafficRank(data) {
     params: data
   })
 }
+
+/**
+ * 用户统计
+ * @returns
+ */
+export function userStats() {
+  return request({
+    url: '/statistics/userStats',
+    method: 'get'
+  })
+}
+
+/**
+ * 流量统计
+ * @returns
+ */
+export function trafficStats() {
+  return request({
+    url: '/statistics/trafficStats',
+    method: 'get'
+  })
+}
+
+/**
+ * 节点统计
+ * @returns
+ */
+export function nodeStats() {
+  return request({
+    url: '/statistics/nodeStats',
+    method: 'get'
+  })
+}
+
+/**
+ * 协议分布统计
+ * @returns
+ */
+export function protocolStats() {
+  return request({
+    url: '/statistics/protocolStats',
+    method: 'get'
+  })
+}

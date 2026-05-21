@@ -244,3 +244,16 @@ export function exportAccountUnused(data) {
     data
   })
 }
+
+/**
+ * 批量账号操作
+ * @param {ids: number[], action: string, days?: number} data
+ * @returns
+ */
+export function batchAccount(data) {
+  return request({
+    url: '/account/batchAccount',
+    method: 'post',
+    data
+  })
+}

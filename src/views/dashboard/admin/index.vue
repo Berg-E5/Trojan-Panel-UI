@@ -1,6 +1,7 @@
 <template>
   <div class="dashboard-editor-container">
     <panel-group :group-data="panelGroupData" />
+    <stats-charts />
     <el-row :gutter="8">
       <el-col
         :xs="{ span: 24 }"
@@ -41,13 +42,15 @@
 <script>
 import PanelGroup from '@/views/dashboard/admin/compoments/PanelGroup.vue'
 import TrafficTable from '@/views/dashboard/admin/compoments/TrafficTable'
+import StatsCharts from '@/views/dashboard/admin/compoments/StatsCharts'
 import { panelGroup } from '@/api/dashboard'
 
 export default {
   name: 'Admin',
   components: {
     PanelGroup,
-    TrafficTable
+    TrafficTable,
+    StatsCharts
   },
   data() {
     return {

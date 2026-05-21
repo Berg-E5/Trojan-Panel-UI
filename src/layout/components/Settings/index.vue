@@ -1,10 +1,10 @@
 <template>
   <div class="drawer-container">
     <div>
-      <h3 class="drawer-title">{{ $('settings.title') }}</h3>
+      <h3 class="drawer-title">{{ $t('settings.title') }}</h3>
 
       <div class="drawer-item">
-        <span>{{ $('settings.theme') }}</span>
+        <span>{{ $t('settings.theme') }}</span>
         <theme-picker
           style="float: right; height: 26px; margin: -3px 8px 0 0"
           @change="themeChange"
@@ -12,17 +12,26 @@
       </div>
 
       <div class="drawer-item">
-        <span>{{ $('settings.tagsView') }}</span>
+        <span>{{ $t('settings.sideTheme') }}</span>
+        <el-switch
+          :value="sideTheme === 'dark'"
+          class="drawer-switch"
+          @change="sideThemeChange"
+        />
+      </div>
+
+      <div class="drawer-item">
+        <span>{{ $t('settings.tagsView') }}</span>
         <el-switch v-model="tagsView" class="drawer-switch" />
       </div>
 
       <div class="drawer-item">
-        <span>{{ $('settings.fixedHeader') }}</span>
+        <span>{{ $t('settings.fixedHeader') }}</span>
         <el-switch v-model="fixedHeader" class="drawer-switch" />
       </div>
 
       <div class="drawer-item">
-        <span>{{ $('settings.sidebarLogo') }}</span>
+        <span>{{ $t('settings.sidebarLogo') }}</span>
         <el-switch v-model="sidebarLogo" class="drawer-switch" />
       </div>
     </div>
@@ -31,6 +40,7 @@
 
 <script>
 import ThemePicker from '@/components/ThemePicker'
+import { mapGetters } from 'vuex'
 
 export default {
   components: { ThemePicker },
@@ -38,6 +48,7 @@ export default {
     return {}
   },
   computed: {
+    ...mapGetters(['sideTheme']),
     fixedHeader: {
       get() {
         return this.$store.state.settings.fixedHeader
@@ -77,6 +88,17 @@ export default {
       this.$store.dispatch('settings/changeSetting', {
         key: 'theme',
         value: val
+      })
+    },
+    sideThemeChange(val) {
+      const theme = val ? 'dark' : 'light'
+      this.$store.dispatch('settings/changeSideTheme', theme)
+      this.$nextTick(() => {
+        if (theme === 'dark') {
+          document.body.classList.add('dark')
+        } else {
+          document.body.classList.remove('dark')
+        }
       })
     }
   }
